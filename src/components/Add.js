@@ -94,10 +94,12 @@ class Add extends Component {
 				<Button
 					type='submit'
 					className='AddCard'
+					onSubmit={this.handleSubmit}
 					variant='primary'
 					size='lg'
 					block>
 					Make Card
+
 				</Button>
 
 				<BaseNav />

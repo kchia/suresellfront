@@ -12,7 +12,7 @@ class ViewAll extends Component {
 		this.state = {
 			newSearch: '',
 			featureList: [],
-
+			car:null
 		};
 	}
 	
@@ -22,14 +22,57 @@ class ViewAll extends Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault()
-		let url = `https://dashboard.heroku.com/apps/suresell`;
-		axios(url)
-			.then((res) => res.data)
+		let url = `https://cors-anywhere.herokuapp.com/https://suresell.herokuapp.com/cars/`;
+		fetch(url)
+			.then((res) => res.json())
 			.then((res) => {
 				this.setState({ featureList: [...res] });
 				console.log(this.state.featureList);
+
+
 			});
-	};
+			for (let i=0;i<this.state.featureList.length;i++){
+			if (Object.values(this.state.featureList[i]).includes(this.state.newSearch)){
+				let car = this.state.featureList[i]
+
+				console.log(car.year);
+				let display = (
+					<div id='autoCard'>
+						<div className='headWrapper'>
+							<div className='number'>
+								{car.year}
+							</div>
+							<div className='makeModel'>
+								{car.make}{' '}{car.model}
+							<br />
+								{car.trim}
+						</div>
+						</div>
+						<div className='bodyWrapper'>
+							<div className='left'>
+								<ul>
+									<li>A</li>
+									<li>B</li>
+									<li>C</li>
+									<li>D</li>
+									<li>E</li>
+								</ul>
+							</div>
+							<div className='right'>
+								<ul>
+									<li>A</li>
+									<li>B</li>
+									<li>C</li>
+									<li>D</li>
+									<li>E</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				)
+				this.setState({ car: display });
+			}
+	};}
 
 	render() {
 		return (
@@ -58,38 +101,9 @@ class ViewAll extends Component {
 						</Form.Row>
 					</Form>
 				</div>
+				
 
-
-				<div id='autoCard'>
-					<div className='headWrapper'>
-						<div className='number'>20</div>
-						<div className='makeModel'>
-							Chevy Malibu
-							<br />
-							Sport
-						</div>
-					</div>
-					<div className='bodyWrapper'>
-						<div className='left'>
-							<ul>
-								<li>A</li>
-								<li>B</li>
-								<li>C</li>
-								<li>D</li>
-								<li>E</li>
-							</ul>
-						</div>
-						<div className='right'>
-							<ul>
-								<li>A</li>
-								<li>B</li>
-								<li>C</li>
-								<li>D</li>
-								<li>E</li>
-							</ul>
-						</div>
-					</div>
-				</div>
+				
 				<BaseNav />
 			</div>
 		);
