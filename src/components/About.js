@@ -29,7 +29,7 @@ function About() {
 					visual cards you can quickly sort through, yourself!
 					<br />
 					<br />
-					SureSell will help make the impression that you are a product expert!
+					Your next customer will wonder if you used SureSell
 				</p>
 			</Jumbotron>
 			<BaseNav />

@@ -8,7 +8,9 @@ class AddForm extends Component {
 			featureList: [],
 		};
 	}
-
+	clearForm = () => {
+		this.setState({ feature: '' });
+	};
 	handleChange = (event) =>
 		this.setState({
 			feature: event.target.value,
@@ -18,6 +20,7 @@ class AddForm extends Component {
 		this.state.featureList.push(this.state.feature);
 		console.log(this.state.featureList);
 		this.setState({ features: this.state.feature });
+		this.clearForm()
 	};
 
 	render() {
@@ -25,7 +28,7 @@ class AddForm extends Component {
 			<div className='AddForm'>
 				<ul className='featureList'>
 					{this.state.featureList.map((item) => (
-						<li key={item}>{item}</li>
+						<li className='featureItem' key={item}>{item}</li>
 					))}
 				</ul>
 				<Form inline className='AddFeature' onSubmit={this.addFeature}>

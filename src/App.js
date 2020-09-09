@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import './App.css';
 import Login from './components/Login';
 import About from './components/About';
@@ -13,17 +13,17 @@ class App extends Component {
 			<div className='App'>
 				<Route
 					path='/'
-          exact
+					exact
 					render={() => {
 						return <Login />;
 					}}
 				/>
-        <Route path='/about' component={About} />
-        <Route path='/viewall' component={ViewAll} />
+				<Route path='/about' component={About} />
+				<Route path='/viewall' component={ViewAll} />
 				<Route path='/add' component={Add} />
 				<Route
 					path='/search'
-          component={Search}
+					component={Search}
 				/>
 			</div>
 		);

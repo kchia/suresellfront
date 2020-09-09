@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import HeadNav from './HeadNav';
 import BaseNav from './BaseNav';
 import Search from './Search';
+import axios from 'axios';
 
 import { Form, Button, Col, Card } from 'react-bootstrap';
 
@@ -14,41 +15,50 @@ class ViewAll extends Component {
 
 		};
 	}
-
+	
 	handleChange = (event) => {
 		this.setState({ newSearch: event.target.value });
 	};
 
 	handleSubmit = (event) => {
-		event.preventDefault();
+		event.preventDefault()
+		let url = `https://dashboard.heroku.com/apps/suresell`;
+		axios(url)
+			.then((res) => res.data)
+			.then((res) => {
+				this.setState({ featureList: [...res] });
+				console.log(this.state.featureList);
+			});
 	};
 
 	render() {
 		return (
 			<div className='ViewAll'>
 				<HeadNav />
-				
-				<Form className='ViewAllSearch' onSubmit={this.handleSubmit}>
-					<Form.Row className='align-items-center'>
-						<Col sm={3} className='my-1'>
-							<Form.Control
-								id='inlineFormInputName'
-								placeholder='year, make, model, or trim'
-								type='text'
-								name='searchString'
-								required
-								onChange={this.handleChange}
-								
-							/>
-						</Col>
+				<div className='searchWrapper'>
+					<Form className='ViewAllSearch' onSubmit={this.handleSubmit}>
+						<Form.Row className='align-items-center'>
+							<Col sm={9.5} className='my-1'>
+								<Form.Control
+									id='inlineFormInputName'
+									placeholder='year, make, model, or trim'
+									type='text'
+									name='searchString'
+									required
+									onChange={this.handleChange}
 
-						<Col xs='auto' className='my-1'>
-							<Button type='submit' className='mb-2' id='Button'>
-								Find
+								/>
+							</Col>
+
+							<Col xs='auto' className='my-1'>
+								<Button type='submit' className='mb-2' id='Button'>
+									Find
 							</Button>
-						</Col>
-					</Form.Row>
-				</Form>
+							</Col>
+						</Form.Row>
+					</Form>
+				</div>
+
 
 				<div id='autoCard'>
 					<div className='headWrapper'>
