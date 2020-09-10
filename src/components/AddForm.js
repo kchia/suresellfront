@@ -5,7 +5,7 @@ class AddForm extends Component {
 		super(props);
 		this.state = {
 			feature: '',
-			featureList: [],
+			carSpecs: [],
 		};
 	}
 	clearForm = () => {
@@ -17,8 +17,8 @@ class AddForm extends Component {
 		});
 	addFeature = (event) => {
 		event.preventDefault();
-		this.state.featureList.push(this.state.feature);
-		console.log(this.state.featureList);
+		this.state.carSpecs.push(this.state.feature);
+		console.log(this.state.carSpecs);
 		this.setState({ features: this.state.feature });
 		this.clearForm()
 	};
@@ -26,8 +26,8 @@ class AddForm extends Component {
 	render() {
 		return (
 			<div className='AddForm'>
-				<ul className='featureList'>
-					{this.state.featureList.map((item) => (
+				<ul className='carSpecs'>
+					{this.state.carSpecs.map((item) => (
 						<li className='featureItem' key={item}>{item}</li>
 					))}
 				</ul>
