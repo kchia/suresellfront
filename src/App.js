@@ -20,7 +20,7 @@ class App extends Component {
 	//needs token to be passed as header for each request
 	handleSubmit = (event) => {
 		event.preventDefault()
-		const url = `https://suresell.herokuapp.com/users/`
+		const url = `https://suresell.herokuapp.com/users/register`
 		fetch(url, {
 			method: 'POST',
 			// headers: {
