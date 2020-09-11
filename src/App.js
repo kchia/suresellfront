@@ -10,33 +10,59 @@ import ViewAll from './components/ViewAll';
 class App extends Component {
 	state = {
 		token: '',
-		email: 'test',
-		username: 'test1',
-		password: 'test2',
-
-	}
-
+		
+		username: '',
+		password: '',
+		login: ''
+	};
 
 	//needs token to be passed as header for each request
-	handleSubmit = (event) => {
-		event.preventDefault()
-		const url = `https://suresell.herokuapp.com/users/register`
+	handleLogin = (event) => {
+		event.preventDefault();
+		const url = `https://suresell.herokuapp.com/api/token/`;
 		fetch(url, {
 			method: 'POST',
-			// headers: {
-			// 	'Authorization': "Bearer " + this.state.token 
-
-			// },
+			headers: {
+				'Content-Type': 'application/json',
+			},
 			body: JSON.stringify({
 				username: this.state.username,
 				password: this.state.password,
-				email: this.state.email
+			}),
+		})
+			.then((res) => {
+				return res.json();
 			})
-		}
-		)
-	}
-
-
+			.then((res) => {
+				this.setState({
+					token: this.state.token,
+					
+					username: this.state.username,
+					password: this.state.password,
+					login: localStorage.getItem('token') ? true : false,
+				});
+				console.log(res);
+				localStorage.setItem('token', res.access)
+				if (this.state.login) {
+					
+						return <ViewAll />
+					
+				}else{
+					console.log('bye bitch')
+				}
+			});
+			
+	};
+	handleLogout = () => {
+		localStorage.removeItem('token');
+		this.setState({
+			token: '',
+			email: '',
+			username: '',
+			password: '',
+			login: false,
+		});
+	};
 	handleChangeEmail = (event) =>
 		this.setState({
 			email: event.target.value,
@@ -49,31 +75,29 @@ class App extends Component {
 		this.setState({
 			password: event.target.value,
 		});
-
-
-
-
+	
 	render() {
 		return (
 			<div className='App'>
 				<Route
 					path='/'
 					exact
-
 					render={() => {
-						return <Login
-							handleSubmit={this.handleSubmit} handleChangeEmail={this.handleChangeEmail}
-							handleChangePassword={this.handleChangePassword}
-							handleChangeUsername={this.handleChangeUsername} />;
+						return (
+							<Login
+								handleLogout={this.handleLogout}
+								handleLogin={this.handleLogin}
+								handleChangeEmail={this.handleChangeEmail}
+								handleChangePassword={this.handleChangePassword}
+								handleChangeUsername={this.handleChangeUsername}
+							/>
+						);
 					}}
 				/>
 				<Route path='/about' component={About} />
 				<Route path='/viewall' component={ViewAll} />
 				<Route path='/add' component={Add} />
-				<Route
-					path='/search'
-					component={Search}
-				/>
+				<Route path='/search' component={Search} />
 			</div>
 		);
 	}

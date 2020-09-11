@@ -8,10 +8,11 @@ class ViewAll extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			newSearch: "",
+			newSearch: '',
 			carSpecs: [],
 			car: null,
 			allCars: null,
+			token: localStorage.getItem('token') ? true : false,
 		};
 	}
 
@@ -40,12 +41,21 @@ class ViewAll extends Component {
 			});
 	};
 	componentDidMount() {
-		let url = `https://cors-anywhere.herokuapp.com/https://suresell.herokuapp.com/cars/`;
-		fetch(url)
-			.then((res) => res.json())
-			.then((res) => {
-				this.setState({ carSpecs: [...res] });
-			});
+		let url = `https://suresell.herokuapp.com/cars/`;
+		if (this.state.token){
+			fetch(url, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				
+			})
+				.then((res) => res.json())
+				.then((res) => {
+					this.setState({ carSpecs: [...res] });
+				});
+
+		}
 	}
 
 	render() {
