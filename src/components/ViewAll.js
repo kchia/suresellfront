@@ -13,7 +13,6 @@ class ViewAll extends Component {
 		this.state = {
 			newSearch: '',
 			features: [],
-			details:[],
 			car: null,
 			allCars: null,
 			token: localStorage.getItem('token') ? true : false,
@@ -28,8 +27,6 @@ class ViewAll extends Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		let url = `https://suresell.herokuapp.com/cars/`;
-		let url2 = `https://suresell.herokuapp.com/features/`;
-		let detailsArr = [];
 		let newArr = [];
 		fetch(url)
 			.then((res) => res.json())
@@ -43,19 +40,6 @@ class ViewAll extends Component {
 					}
 				}
 				this.setState({ features: newArr });
-			});
-		fetch(url2)
-			.then((res) => res.json())
-			.then((res) => {
-				this.setState({ details: [...res] });
-				for (let i = 0; i < this.state.details.length; i++) {
-					if (
-						Object.values(this.state.details[i]).includes(this.state.newSearch)
-					) {
-						detailsArr.push(this.state.details[i]);
-					}
-				}
-				this.setState({ details: detailsArr });
 			});
 	};
 
@@ -226,8 +210,7 @@ class ViewAll extends Component {
 											<li>C</li>
 											<li>D</li>
 											<li>E</li>
-											
-										</ul><Link
+											<Link
 												to={{
 													pathname: "/edit/"+car.id,
 													data: car
@@ -247,6 +230,7 @@ class ViewAll extends Component {
 												onClick={(e)=> {handleDelete(e, car.id)}}>
 												Delete
 											</button>
+										</ul>
 									</div>
 								</div>
 								{/* </SwipeToDelete> */}
