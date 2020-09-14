@@ -4,13 +4,13 @@ import Feature from './Feature';
 
 class FeatureList extends Component {
 	render() {
-		return this.props.carSpecs.map((feature) => (
+		return this.props.features.map((feature) => (
 			<Feature key={feature.name} feature={feature} />
 		));
 	}
 }
 FeatureList.propTypes = {
-	carSpecs: PropTypes.array.isRequired,
+	features: PropTypes.array.isRequired,
 };
 
 export default FeatureList;

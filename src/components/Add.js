@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import HeadNav from "./HeadNav";
 import BaseNav from "./BaseNav";
-import AddForm from "./AddForm";
 //import FeatureList from './FeatureList'
 import { Form, Row, Col, Button } from "react-bootstrap";
 
@@ -13,21 +12,61 @@ class Add extends Component {
       make: "",
       model: "",
       trim: "",
+      feature: '',
+      features: [],
     };
   }
-  handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(event.target);
-    const data = new FormData(event.target);
-
-    fetch(
-      "https://cors-anywhere.herokuapp.com/https://suresell.herokuapp.com/cars/",
-      {
-        method: "POST",
-        body: data,
-      }
-    );
+  clearForm = () => {
+    this.setState({ feature: '' });
   };
+  handleChange = (event) =>
+    this.setState({
+      feature: event.target.value,
+    });
+  addFeature = (event) => {
+    event.preventDefault();
+    this.setState(prevState => {
+      return {
+        features: [...prevState.features, this.state.feature]
+      }
+    })
+    console.log(this.state.features);
+
+    this.clearForm()
+  };
+
+
+  handleSubmit = (event) => {
+    // event.preventDefault();
+    console.log(event.target);
+    const data = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization : 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify({
+        year: this.state.year,
+        make: this.state.make,
+        model: this.state.year,
+        trim: this.state.trim,
+        // features: this.state.features,
+      })
+    };
+    fetch(
+      "https://suresell.herokuapp.com/cars/", data)
+      .then((res) => {
+        return res.json()
+      })
+      .then((res) => {
+        console.log(res);
+      }).catch(error => console.error(error))
+  }
+
+
+
+
+
   handleChangeYear = (event) =>
     this.setState({
       year: event.target.value,
@@ -103,15 +142,40 @@ class Add extends Component {
         </Form>
         <br />
 
-        <AddForm />
+        <div className='AddForm'>
+          <ul className='features'>
+            {this.state.features.map((item) => (
+              <li className='featureItem' key={item}>{item}</li>
+            ))}
+          </ul>
+          <Form inline className='AddFeature' onSubmit={this.addFeature}>
+            Add Feature
+					<Form.Control
+              className='mb-2 mr-sm-2'
+              id='inlineFormInputName2'
+              placeholder='Feature'
+              type='text'
+              name='searchString'
+              required
+              onChange={this.handleChange}
+              value={this.state.feature}
+            />
+            <Button type='submit' className='mb-2' id='Button'>
+              +
+					</Button>
+            <Form.Text className='text-muted'>**Abbreviate Features**</Form.Text>
+          </Form>
+        </div>
+
 
         <Button
           type="submit"
           className="AddCard"
-          onSubmit={this.handleSubmit}
+          onClick={this.handleSubmit}
           variant="primary"
           size="lg"
           block
+          href='/viewall'
         >
           Make Card
         </Button>

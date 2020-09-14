@@ -10,10 +10,10 @@ function BaseNav() {
 				bg='dark'
 				variant='dark'>
 				<Nav activeKey='/home'>
-					<Nav.Item className='navSearch'>
+					{/* <Nav.Item className='navSearch'>
 						
 						<Nav.Link  href='/search'>Search</Nav.Link>
-					</Nav.Item>
+					</Nav.Item> */}
 					<Nav.Item>
 						<Nav.Link className='allIcon' href='/viewall'>All</Nav.Link>
 					</Nav.Item>

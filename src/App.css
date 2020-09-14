@@ -4,7 +4,7 @@
 	.App {
 		display:flex;
 	justify-content: center;
-
+		
 
 }
 
@@ -151,16 +151,17 @@
 		margin: 60px 10px 0 10px;
 		
 	}
+	
 	#inlineFormInputName{
 		margin-right:0;
 
 	}
 	.ViewAll {
-		margin-bottom: 30px;
+		margin-bottom: 60px;
 	}
 	#autoCard {
 		border: 1px solid;
-		margin: 5px;
+		margin: 5px 0 0 0;
 		border-radius: 8%;
 		padding: 20px;
 		height: 327px;
@@ -184,7 +185,7 @@
 		padding-top: 20px;
 	}
 	.left {
-		width: 128px;
+		width: 150px;
 		border-right: 1px solid;
 		font-size: 25px;
 		height: 195px;
@@ -195,6 +196,9 @@
 	}
 	.bodyWrapper ul {
 		list-style: square;
+	}
+	.editButton, .deleteButton{
+		font-size: 12px;
 	}
 	
 	

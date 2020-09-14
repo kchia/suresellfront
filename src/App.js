@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import './App.css';
 import Login from './components/Login';
 import About from './components/About';
 import Add from './components/Add';
 import Search from './components/Search';
 import ViewAll from './components/ViewAll';
+import Edit from './components/Edit'
 
 class App extends Component {
-	state = {
-		token: '',
-		
-		username: '',
-		password: '',
-		login: ''
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			token: '',
+			username: '',
+			password: '',
+			login: false,
+			error: false,
+		};
+	}
 
+	renderRedirect = () => {
+		if (this.state.login && !this.state.error) {
+			return <Redirect to='/viewall' />;
+		}
+	};
 	//needs token to be passed as header for each request
 	handleLogin = (event) => {
 		event.preventDefault();
@@ -34,25 +43,32 @@ class App extends Component {
 				return res.json();
 			})
 			.then((res) => {
+				if (res.access) {
+					localStorage.setItem('token', res.access);
+				} else {
+					throw new Error('unsuccessful login');
+				}
+			})
+			.then((res) => {
 				this.setState({
 					token: this.state.token,
-					
+
 					username: this.state.username,
 					password: this.state.password,
 					login: localStorage.getItem('token') ? true : false,
 				});
 				console.log(res);
-				localStorage.setItem('token', res.access)
-				if (this.state.login) {
-					
-						return <ViewAll />
-					
-				}else{
-					console.log('bye bitch')
+			})
+			.catch((err) => {
+				this.setState({ error: true });
+				console.error(err);
+				if (this.state.error) {
+					alert('Username and/or password is invalid');
 				}
 			});
-			
 	};
+	
+
 	handleLogout = () => {
 		localStorage.removeItem('token');
 		this.setState({
@@ -63,6 +79,7 @@ class App extends Component {
 			login: false,
 		});
 	};
+
 	handleChangeEmail = (event) =>
 		this.setState({
 			email: event.target.value,
@@ -75,10 +92,19 @@ class App extends Component {
 		this.setState({
 			password: event.target.value,
 		});
-	
+
 	render() {
+		// if(this.state.login){
+		// 	return <Redirect to='/viewall'/>
+		// }
+
 		return (
 			<div className='App'>
+				{this.renderRedirect()}
+				<Route
+				path='/edit/:id'
+				component={Edit}/>
+				{/* <Edit/> */}
 				<Route
 					path='/'
 					exact
@@ -97,7 +123,7 @@ class App extends Component {
 				<Route path='/about' component={About} />
 				<Route path='/viewall' component={ViewAll} />
 				<Route path='/add' component={Add} />
-				<Route path='/search' component={Search} />
+				{/* <Route path='/search' component={Search} /> */}
 			</div>
 		);
 	}
